@@ -4,7 +4,6 @@ import { getAllPatterns } from "@/content/patterns/registry";
 import {
   patternCategories,
   patternCategoryLabels,
-  
   type PatternCategory,
 } from "@/content/patterns/types";
 import { Pattern } from "@/content/patterns/schema";

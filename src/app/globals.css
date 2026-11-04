@@ -53,9 +53,29 @@
   --color-rule: var(--rule);
 
   /* Typography — fallbacks in place until Commit 4 wires next/font */
-  --font-sans: var(--font-body, var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif));
-  --font-mono: var(--font-code, var(--font-geist-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace));
-  --font-heading: var(--font-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif);
+  --font-sans: var(
+    --font-body,
+    var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif)
+  );
+  --font-mono: var(
+    --font-code,
+    var(
+      --font-geist-mono,
+      ui-monospace,
+      "SFMono-Regular",
+      Menlo,
+      Consolas,
+      monospace
+    )
+  );
+  --font-heading: var(
+    --font-serif,
+    "Iowan Old Style",
+    "Palatino Linotype",
+    Palatino,
+    Georgia,
+    serif
+  );
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -185,12 +205,20 @@
     background-attachment: fixed;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading;
     text-wrap: balance;
   }
 
-  code, pre, kbd, samp {
+  code,
+  pre,
+  kbd,
+  samp {
     @apply font-mono;
   }
 

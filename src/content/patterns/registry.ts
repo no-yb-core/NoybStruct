@@ -4,11 +4,15 @@ import { abstractFactory } from "./abstract-factory";
 import { adapter } from "./adapter";
 import { bridge } from "./bridge";
 import { builder } from "./builder";
+import { chainOfResponsibility } from "./chain-of-responsibility";
+import { command } from "./command";
 import { composite } from "./composite";
 import { decorator } from "./decorator";
 import { facade } from "./facade";
 import { factoryMethod } from "./factory-method";
 import { flyweight } from "./flyweight";
+import { iterator } from "./iterator";
+import { mediator } from "./mediator";
 import { observer } from "./observer";
 import { prototype } from "./prototype";
 import { proxy } from "./proxy";
@@ -22,11 +26,15 @@ const patterns: readonly Pattern[] = [
   adapter,
   bridge,
   builder,
+  chainOfResponsibility,
+  command,
   composite,
   decorator,
   facade,
   factoryMethod,
   flyweight,
+  iterator,
+  mediator,
   observer,
   prototype,
   proxy,

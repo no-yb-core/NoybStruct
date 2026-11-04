@@ -109,4 +109,17 @@ describe("pattern registry", () => {
       expect(pattern?.category).toBe("behavioral");
     }
   });
+  it("has command, chain-of-responsibility, mediator, and iterator registered", () => {
+    const slugs = [
+      "command",
+      "chain-of-responsibility",
+      "mediator",
+      "iterator",
+    ] as const;
+    for (const slug of slugs) {
+      const pattern = getPattern(slug);
+      expect(pattern, `Missing: ${slug}`).toBeDefined();
+      expect(pattern?.category).toBe("behavioral");
+    }
+  });
 });

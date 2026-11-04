@@ -122,4 +122,18 @@ describe("pattern registry", () => {
       expect(pattern?.category).toBe("behavioral");
     }
   });
+  it("binds all 23 GoF patterns", () => {
+    const all = getAllPatterns();
+    expect(all).toHaveLength(23);
+
+    const byCategory = all.reduce<Record<string, number>>((acc, p) => {
+      acc[p.category] = (acc[p.category] ?? 0) + 1;
+      return acc;
+    }, {});
+    expect(byCategory).toEqual({
+      creational: 5,
+      structural: 7,
+      behavioral: 11,
+    });
+  });
 });

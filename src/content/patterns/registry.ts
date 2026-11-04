@@ -11,8 +11,10 @@ import { decorator } from "./decorator";
 import { facade } from "./facade";
 import { factoryMethod } from "./factory-method";
 import { flyweight } from "./flyweight";
+import { interpreter } from "./interpreter";
 import { iterator } from "./iterator";
 import { mediator } from "./mediator";
+import { memento } from "./memento";
 import { observer } from "./observer";
 import { prototype } from "./prototype";
 import { proxy } from "./proxy";
@@ -20,6 +22,7 @@ import { singleton } from "./singleton";
 import { state } from "./state";
 import { strategy } from "./strategy";
 import { templateMethod } from "./template-method";
+import { visitor } from "./visitor";
 
 const patterns: readonly Pattern[] = [
   abstractFactory,
@@ -33,8 +36,10 @@ const patterns: readonly Pattern[] = [
   facade,
   factoryMethod,
   flyweight,
+  interpreter,
   iterator,
   mediator,
+  memento,
   observer,
   prototype,
   proxy,
@@ -42,6 +47,7 @@ const patterns: readonly Pattern[] = [
   state,
   strategy,
   templateMethod,
+  visitor,
 ];
 
 export function sortPatterns<T extends { slug: PatternSlug }>(

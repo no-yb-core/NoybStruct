@@ -78,4 +78,11 @@ it("every registered pattern belongs to a valid category", () => {
     );
   }
 });
+it("has four structural patterns registered", () => {
+  const structural = ["adapter", "bridge", "composite", "decorator"] as const;
+  for (const slug of structural) {
+    expect(getPattern(slug), `Missing: ${slug}`).toBeDefined();
+    expect(getPattern(slug)?.category).toBe("structural");
+  }
+});
 });

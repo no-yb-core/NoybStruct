@@ -1,16 +1,23 @@
 import type { Pattern } from "./schema";
-import { PatternSlug, patternSlugs } from "./types";
+import { patternSlugs, PatternSlug } from "./types";
 import { abstractFactory } from "./abstract-factory";
+import { adapter } from "./adapter";
+import { bridge } from "./bridge";
 import { builder } from "./builder";
+import { composite } from "./composite";
+import { decorator } from "./decorator";
 import { factoryMethod } from "./factory-method";
-
+import { prototype } from "./prototype";
 import { singleton } from "./singleton";
 import { strategy } from "./strategy";
-import { prototype } from "./prototype"
 
 const patterns: readonly Pattern[] = [
   abstractFactory,
+  adapter,
+  bridge,
   builder,
+  composite,
+  decorator,
   factoryMethod,
   prototype,
   singleton,

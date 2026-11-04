@@ -2,9 +2,10 @@
 import type { Pattern } from "./schema";
 import type { PatternSlug } from "./types";
 
-const patterns: readonly Pattern[] = [
-  // Each pattern module will be imported and appended here as content lands.
-];
+
+import { strategy } from "./strategy";
+
+const patterns: readonly Pattern[] = [strategy];
 
 export function getAllPatterns(): readonly Pattern[] {
   return patterns;

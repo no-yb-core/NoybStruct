@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getAllPatterns } from "./registry";
+import { getAllPatterns, getPattern } from "./registry";
 import { patternSchema } from "./schema";
 
 describe("pattern registry", () => {
@@ -13,5 +13,12 @@ describe("pattern registry", () => {
       const result = patternSchema.safeParse(pattern);
       expect(result.success, `Invalid pattern: ${pattern.slug}`).toBe(true);
     }
+  });
+
+  it("has Strategy registered", () => {
+    const pattern = getPattern("strategy");
+    expect(pattern).toBeDefined();
+    expect(pattern?.category).toBe("behavioral");
+    expect(pattern?.related.length).toBeGreaterThan(0);
   });
 });

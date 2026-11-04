@@ -101,4 +101,12 @@ describe("pattern registry", () => {
       expect(pattern?.category).toBe("structural");
     }
   });
+
+  it("has observer, state, and template-method registered", () => {
+    for (const slug of ["observer", "state", "template-method"] as const) {
+      const pattern = getPattern(slug);
+      expect(pattern, `Missing: ${slug}`).toBeDefined();
+      expect(pattern?.category).toBe("behavioral");
+    }
+  });
 });

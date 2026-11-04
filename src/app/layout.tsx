@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { siteUrl } from "@/lib/site";
 
 const bodyFont = Inter({
   variable: "--font-body",
@@ -23,9 +24,10 @@ const codeFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "Design Codex",
-    template: "%s · Design Codex",
+    default: "Design Craft",
+    template: "%s · Design Craft",
   },
   description:
     "An interactive digital book for the 23 Gang of Four design patterns.",

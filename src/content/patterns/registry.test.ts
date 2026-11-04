@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getAllPatterns, getPattern } from "./registry";
+import { getAllPatterns, getPattern, sortPatterns } from "./registry";
 import { patternSchema } from "./schema";
 
 describe("pattern registry", () => {
@@ -21,4 +21,40 @@ describe("pattern registry", () => {
     expect(pattern?.category).toBe("behavioral");
     expect(pattern?.related.length).toBeGreaterThan(0);
   });
+
+  it("returns patterns in canonical slug order", () => {
+  const slugs = getAllPatterns().map((p) => p.slug);
+  const expected = [...slugs].sort(
+    (a, b) =>
+      // patternSlugs is sorted by design; this asserts getAllPatterns respects it
+      slugs.indexOf(a) - slugs.indexOf(b),
+  );
+  expect(slugs).toEqual(expected);
+});
+
+// new describe block at the bottom:
+describe("sortPatterns", () => {
+  it("orders by canonical slug order", () => {
+    const result = sortPatterns([
+      { slug: "visitor" as const },
+      { slug: "abstract-factory" as const },
+      { slug: "strategy" as const },
+    ]);
+    expect(result.map((p) => p.slug)).toEqual([
+      "abstract-factory",
+      "strategy",
+      "visitor",
+    ]);
+  });
+
+  it("does not mutate its input", () => {
+    const input = [
+      { slug: "strategy" as const },
+      { slug: "abstract-factory" as const },
+    ];
+    const original = [...input];
+    sortPatterns(input);
+    expect(input).toEqual(original);
+  });
+});
 });

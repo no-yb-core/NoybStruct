@@ -6,8 +6,11 @@ import { bridge } from "./bridge";
 import { builder } from "./builder";
 import { composite } from "./composite";
 import { decorator } from "./decorator";
+import { facade } from "./facade";
 import { factoryMethod } from "./factory-method";
+import { flyweight } from "./flyweight";
 import { prototype } from "./prototype";
+import { proxy } from "./proxy";
 import { singleton } from "./singleton";
 import { strategy } from "./strategy";
 
@@ -18,8 +21,11 @@ const patterns: readonly Pattern[] = [
   builder,
   composite,
   decorator,
+  facade,
   factoryMethod,
+  flyweight,
   prototype,
+  proxy,
   singleton,
   strategy,
 ];

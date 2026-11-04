@@ -4,7 +4,8 @@ export const composite: Pattern = {
   slug: "composite",
   name: "Composite",
   category: "structural",
-  tagline: "Treat single objects and groups of objects uniformly through a tree.",
+  tagline:
+    "Treat single objects and groups of objects uniformly through a tree.",
 
   introduction:
     "Composite composes objects into tree structures to represent part-whole hierarchies. The pattern lets clients treat individual leaves and compositions of leaves uniformly — a single file and a folder both answer `getSize()`, even though the folder computes its answer from its children. Composite is what makes recursive structures (file systems, UI trees, expression ASTs, document outlines) traversable without special-casing 'is this a container?'.",

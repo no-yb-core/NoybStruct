@@ -80,7 +80,9 @@ export default async function PatternPage({ params }: PageProps) {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-heading text-2xl font-semibold">When not to use it</h2>
+        <h2 className="font-heading text-2xl font-semibold">
+          When not to use it
+        </h2>
         <ul className="mt-3 list-disc space-y-1 pl-6">
           {pattern.whenNotToUse.map((item) => (
             <li key={item}>{item}</li>
@@ -128,7 +130,9 @@ export default async function PatternPage({ params }: PageProps) {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-heading text-2xl font-semibold">Related patterns</h2>
+        <h2 className="font-heading text-2xl font-semibold">
+          Related patterns
+        </h2>
         <ul className="mt-3 space-y-2">
           {pattern.related.map((rel) => {
             const linked = getPattern(rel.slug);

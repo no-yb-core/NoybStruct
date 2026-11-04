@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { PatternDiagram } from "@/components/patterns/pattern-diagram";
 
 
+
 const props = {
   content: "classDiagram\n  Context --> Strategy",
   description: "A Context delegates to a Strategy interface.",

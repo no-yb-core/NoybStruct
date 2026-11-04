@@ -57,4 +57,25 @@ describe("sortPatterns", () => {
     expect(input).toEqual(original);
   });
 });
+
+it("has all five creational patterns registered", () => {
+  const creational = [
+    "abstract-factory",
+    "builder",
+    "factory-method",
+    "prototype",
+    "singleton",
+  ] as const;
+  for (const slug of creational) {
+    expect(getPattern(slug), `Missing: ${slug}`).toBeDefined();
+  }
+});
+
+it("every registered pattern belongs to a valid category", () => {
+  for (const pattern of getAllPatterns()) {
+    expect(["creational", "structural", "behavioral"]).toContain(
+      pattern.category,
+    );
+  }
+});
 });

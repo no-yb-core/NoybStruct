@@ -1,8 +1,21 @@
-import type { Pattern} from "./schema";
+import type { Pattern } from "./schema";
 import { PatternSlug, patternSlugs } from "./types";
-import { strategy } from "./strategy";
+import { abstractFactory } from "./abstract-factory";
+import { builder } from "./builder";
+import { factoryMethod } from "./factory-method";
 
-const patterns: readonly Pattern[] = [strategy];
+import { singleton } from "./singleton";
+import { strategy } from "./strategy";
+import { prototype } from "./prototype"
+
+const patterns: readonly Pattern[] = [
+  abstractFactory,
+  builder,
+  factoryMethod,
+  prototype,
+  singleton,
+  strategy,
+];
 
 export function sortPatterns<T extends { slug: PatternSlug }>(
   input: readonly T[],

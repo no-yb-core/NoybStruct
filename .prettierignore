@@ -1,0 +1,6 @@
+# .prettierignore
+node_modules
+.next
+.turbo
+src/generated/prisma
+pnpm-lock.yaml

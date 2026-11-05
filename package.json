@@ -19,7 +19,9 @@
     "db:reset": "prisma migrate reset",
     "db:status": "prisma migrate status",
     "db:deploy:test": "dotenv run --file .env.test -- prisma migrate deploy",
-    "db:status:test": "dotenv run --file .env.test -- prisma migrate status"
+    "db:status:test": "dotenv run --file .env.test -- prisma migrate status",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import type { Challenge } from "@/content/challenges/schema";
 import { useGame, type GameAction, type GameState } from "../use-game";
 import { evaluateAnswer } from "../engine";
@@ -9,17 +9,26 @@ import { CompletionScreen } from "./completion-screen";
 import { ProgressBar } from "./progress-bar";
 import { useSubmitAttempt } from "@/features/challenges/use-submit-attempt";
 
+// Stable no-op subscribe — useSyncExternalStore needs a stable reference
+const emptySubscribe = () => () => {};
+
+function useMounted() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true, // client snapshot
+    () => false, // server snapshot
+  );
+}
+
 type GameSessionProps = {
   challenges: readonly Challenge[];
   patternNames: Record<string, string>;
 };
 
 export function GameSession(props: GameSessionProps) {
-  // useGame shuffles with Math.random(), which differs between the
-  // server render and the hydration render. Defer to the client so
-  // the two DOM trees never disagree.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  // useGame shuffles with Math.random(), which differs between SSR and
+  // hydration. Render a skeleton on both sides, then mount on the client.
+  const mounted = useMounted();
 
   if (!mounted) {
     return (

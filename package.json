@@ -17,7 +17,9 @@
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset",
-    "db:status": "prisma migrate status"
+    "db:status": "prisma migrate status",
+    "db:deploy:test": "dotenv run --file .env.test -- prisma migrate deploy",
+    "db:status:test": "dotenv run --file .env.test -- prisma migrate status"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

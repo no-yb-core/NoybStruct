@@ -14,6 +14,11 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     globals: true,
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    exclude: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/*.integration.test.{ts,tsx}",
+    ],
     pool: "threads",
   },
 });

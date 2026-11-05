@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "feature/**"]
   pull_request:
     branches: [main]
 
@@ -13,32 +13,50 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: design_craft_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # Local ephemeral DB — overrides anything from secrets for this job
+      DATABASE_URL: postgresql://postgres:testpass@localhost:5432/design_craft_test?sslmode=disable
+      DIRECT_URL: postgresql://postgres:testpass@localhost:5432/design_craft_test?sslmode=disable
+
+      # From repo secrets/vars — needed by next build and auth code
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+      AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+      AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+      NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+
+      NEXT_TELEMETRY_DISABLED: "1"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: pnpm
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Type check
-        run: pnpm typecheck
-
-      - name: Unit tests
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm db:deploy
+      - run: pnpm test:integration
+      - run: pnpm build

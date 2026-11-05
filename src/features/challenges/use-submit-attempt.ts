@@ -10,6 +10,7 @@ export type SubmitAttemptResult = {
   xpAmount: number;
   totalXp: number;
   level: LevelProgress;
+  newAchievements: Array<{ slug: string; xpBonus: number }>;
 };
 
 type State =

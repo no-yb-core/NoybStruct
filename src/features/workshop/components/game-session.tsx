@@ -70,7 +70,12 @@ type ChallengeViewProps = {
   patternNames: Record<string, string>;
 };
 
-function ChallengeView({ challenge, state, dispatch, patternNames }: ChallengeViewProps) {
+function ChallengeView({
+  challenge,
+  state,
+  dispatch,
+  patternNames,
+}: ChallengeViewProps) {
   const options = state.options[challenge.slug];
   const record = state.evaluations[challenge.slug];
   const { state: submitState, submit } = useSubmitAttempt(
@@ -81,7 +86,11 @@ function ChallengeView({ challenge, state, dispatch, patternNames }: ChallengeVi
   function handleSubmit() {
     if (!state.selectedPatternSlug) return;
     const isRetry = state.attempted.has(challenge.slug);
-    const evaluation = evaluateAnswer(challenge, state.selectedPatternSlug, isRetry);
+    const evaluation = evaluateAnswer(
+      challenge,
+      state.selectedPatternSlug,
+      isRetry,
+    );
     dispatch({ type: "SUBMIT" });
     void submit(evaluation.correct);
   }

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { awardXp } from "./xp";
+import { checkAndUnlock } from "./achievements";
 
 type RecordAttemptInput = {
   userId: string;
@@ -79,6 +80,8 @@ export async function recordChallengeAttempt(input: RecordAttemptInput) {
       if (!xpAwarded) xpAmount = 0;
     }
 
-    return { attempt, isFirstCorrect, xpAwarded, xpAmount };
+    const newAchievements = isCorrect ? await checkAndUnlock(userId, tx) : [];
+
+    return { attempt, isFirstCorrect, xpAwarded, xpAmount, newAchievements };
   });
 }

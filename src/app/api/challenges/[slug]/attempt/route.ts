@@ -34,6 +34,7 @@ export async function POST(
       isFirstCorrect: result.isFirstCorrect,
       xpAwarded: result.xpAwarded,
       xpAmount: result.xpAmount,
+      newAchievements: result.newAchievements,
       totalXp,
       level,
     });

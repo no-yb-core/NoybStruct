@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { Challenge } from "@/content/challenges/schema";
 import { useGame, type GameAction, type GameState } from "../use-game";
 import { evaluateAnswer } from "../engine";
@@ -13,7 +14,26 @@ type GameSessionProps = {
   patternNames: Record<string, string>;
 };
 
-export function GameSession({ challenges, patternNames }: GameSessionProps) {
+export function GameSession(props: GameSessionProps) {
+  // useGame shuffles with Math.random(), which differs between the
+  // server render and the hydration render. Defer to the client so
+  // the two DOM trees never disagree.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return (
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <div className="h-2 w-full animate-pulse rounded bg-neutral-200" />
+        <div className="mt-8 h-64 animate-pulse rounded bg-neutral-100" />
+      </div>
+    );
+  }
+
+  return <GameSessionInner {...props} />;
+}
+
+function GameSessionInner({ challenges, patternNames }: GameSessionProps) {
   const { state, dispatch, restart } = useGame(challenges);
 
   if (state.phase === "complete") {
@@ -50,12 +70,7 @@ type ChallengeViewProps = {
   patternNames: Record<string, string>;
 };
 
-function ChallengeView({
-  challenge,
-  state,
-  dispatch,
-  patternNames,
-}: ChallengeViewProps) {
+function ChallengeView({ challenge, state, dispatch, patternNames }: ChallengeViewProps) {
   const options = state.options[challenge.slug];
   const record = state.evaluations[challenge.slug];
   const { state: submitState, submit } = useSubmitAttempt(
@@ -66,14 +81,8 @@ function ChallengeView({
   function handleSubmit() {
     if (!state.selectedPatternSlug) return;
     const isRetry = state.attempted.has(challenge.slug);
-    const evaluation = evaluateAnswer(
-      challenge,
-      state.selectedPatternSlug,
-      isRetry,
-    );
-    // 1. Update local game state synchronously — unchanged behavior
+    const evaluation = evaluateAnswer(challenge, state.selectedPatternSlug, isRetry);
     dispatch({ type: "SUBMIT" });
-    // 2. Persist to DB in the background — UI doesn't wait
     void submit(evaluation.correct);
   }
 

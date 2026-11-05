@@ -21,7 +21,8 @@
     "db:deploy:test": "dotenv run --file .env.test -- prisma migrate deploy",
     "db:status:test": "dotenv run --file .env.test -- prisma migrate status",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
@@ -33,6 +34,7 @@
     "lucide-react": "^1.66.0",
     "next": "16.4.4",
     "next-auth": "5.0.0-beta.32",
+    "prisma": "7.10.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "shadcn": "^4.23.0",
@@ -54,7 +56,6 @@
     "eslint-config-next": "16.4.4",
     "jsdom": "^30.1.3",
     "prettier": "^3.9.10",
-    "prisma": "7.10.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",

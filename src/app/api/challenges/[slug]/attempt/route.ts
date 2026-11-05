@@ -1,9 +1,10 @@
 // src/app/api/challenges/[slug]/attempt/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { getCurrentUserId } from "@/lib/auth";
+
 import { recordChallengeAttempt } from "@/lib/db/attempts";
 import { getUserXp } from "@/lib/db/xp";
+import { getCurrentUserId } from "@/lib/session";
 
 const bodySchema = z.object({
   isCorrect: z.boolean(),
@@ -15,7 +16,7 @@ export async function POST(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const userId = getCurrentUserId(req);
+    const userId = await getCurrentUserId();
     const { slug } = await params;
     const body = bodySchema.parse(await req.json());
 

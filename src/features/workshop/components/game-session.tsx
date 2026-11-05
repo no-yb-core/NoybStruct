@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import type { Challenge } from "@/content/challenges/schema";
 import { useGame, type GameAction, type GameState } from "../use-game";
 import { evaluateAnswer } from "../engine";
@@ -8,12 +9,40 @@ import { CompletionScreen } from "./completion-screen";
 import { ProgressBar } from "./progress-bar";
 import { useSubmitAttempt } from "@/features/challenges/use-submit-attempt";
 
+// Stable no-op subscribe — useSyncExternalStore needs a stable reference
+const emptySubscribe = () => () => {};
+
+function useMounted() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true, // client snapshot
+    () => false, // server snapshot
+  );
+}
+
 type GameSessionProps = {
   challenges: readonly Challenge[];
   patternNames: Record<string, string>;
 };
 
-export function GameSession({ challenges, patternNames }: GameSessionProps) {
+export function GameSession(props: GameSessionProps) {
+  // useGame shuffles with Math.random(), which differs between SSR and
+  // hydration. Render a skeleton on both sides, then mount on the client.
+  const mounted = useMounted();
+
+  if (!mounted) {
+    return (
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <div className="h-2 w-full animate-pulse rounded bg-neutral-200" />
+        <div className="mt-8 h-64 animate-pulse rounded bg-neutral-100" />
+      </div>
+    );
+  }
+
+  return <GameSessionInner {...props} />;
+}
+
+function GameSessionInner({ challenges, patternNames }: GameSessionProps) {
   const { state, dispatch, restart } = useGame(challenges);
 
   if (state.phase === "complete") {
@@ -71,9 +100,7 @@ function ChallengeView({
       state.selectedPatternSlug,
       isRetry,
     );
-    // 1. Update local game state synchronously — unchanged behavior
     dispatch({ type: "SUBMIT" });
-    // 2. Persist to DB in the background — UI doesn't wait
     void submit(evaluation.correct);
   }
 

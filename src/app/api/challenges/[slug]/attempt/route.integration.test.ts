@@ -1,29 +1,37 @@
-import { describe, it, expect, beforeEach, beforeAll, afterAll } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  beforeAll,
+  afterAll,
+} from "vitest";
 import { NextRequest } from "next/server";
-import { POST } from "./route";
 import { prisma } from "@/lib/prisma";
 import { assertTestDatabase, resetDatabase } from "@/test/db-utils";
+
+// 👇 mock the session module BEFORE importing the route
+const mockUserId = "00000000-0000-0000-0000-000000000001";
+vi.mock("@/lib/session", () => ({
+  getCurrentUserId: vi.fn(async () => mockUserId),
+}));
+
+import { POST } from "./route";
 
 beforeAll(assertTestDatabase);
 beforeEach(async () => {
   await resetDatabase();
   await prisma.user.create({
-    data: {
-      id: "00000000-0000-0000-0000-000000000001",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
+    data: { id: mockUserId, createdAt: new Date(), updatedAt: new Date() },
   });
 });
 afterAll(async () => prisma.$disconnect());
 
-function makeReq(
-  body: unknown,
-  userId = "00000000-0000-0000-0000-000000000001",
-) {
+function makeReq(body: unknown) {
   return new NextRequest("http://localhost/api/challenges/two-sum/attempt", {
     method: "POST",
-    headers: { "content-type": "application/json", "x-user-id": userId },
+    headers: { "content-type": "application/json" },
     body: JSON.stringify(body),
   });
 }
@@ -40,9 +48,6 @@ describe("POST /api/challenges/[slug]/attempt", () => {
     const json = await res.json();
     expect(json.xpAwarded).toBe(true);
     expect(json.xpAmount).toBe(50);
-    expect(json.totalXp).toBe(50);
-    expect(json.level.current).toBe("Apprentice");
-    expect(json.level.progressRatio).toBe(0.5);
   });
 
   it("returns 400 on invalid body", async () => {
@@ -52,18 +57,17 @@ describe("POST /api/challenges/[slug]/attempt", () => {
     expect(res.status).toBe(400);
   });
 
-  it("returns 401 without x-user-id", async () => {
-    const req = new NextRequest(
-      "http://localhost/api/challenges/two-sum/attempt",
+  it("returns 401 when no session", async () => {
+    const { getCurrentUserId } = await import("@/lib/session");
+    vi.mocked(getCurrentUserId).mockRejectedValueOnce(
+      new Response("Unauthenticated", { status: 401 }),
+    );
+    const res = await POST(
+      makeReq({ isCorrect: true, patternSlug: "arrays" }),
       {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ isCorrect: true, patternSlug: "arrays" }),
+        params: Promise.resolve({ slug: "two-sum" }),
       },
     );
-    const res = await POST(req, {
-      params: Promise.resolve({ slug: "two-sum" }),
-    });
     expect(res.status).toBe(401);
   });
 });

@@ -1,4 +1,3 @@
-// src/lib/auth.ts (new)
 import { z } from "zod";
 
 /**
@@ -7,7 +6,7 @@ import { z } from "zod";
  */
 export function getCurrentUserId(req: Request): string {
   const header = req.headers.get("x-user-id");
-  const parsed = z.string().uuid().safeParse(header);
+  const parsed = z.string().min(1).safeParse(header);
   if (!parsed.success) {
     throw new Response("Unauthenticated", { status: 401 });
   }

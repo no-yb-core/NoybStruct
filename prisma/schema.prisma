@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =========================================================================
+// Enums
+// =========================================================================
+
+enum Visibility {
+  public
+  private
+
+  @@map("visibility")
+}
+
+// =========================================================================
+// Auth.js tables
+// =========================================================================
+
+model User {
+  id             String    @id
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime? @map("email_verified") @db.Timestamptz(6)
+  image          String?
+  githubUsername String?   @unique @map("github_username")
+  githubId       String?   @unique @map("github_id")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  accounts           Account[]
+  sessions           Session[]
+  challengeAttempts  ChallengeAttempt[]
+  xpTransactions     XpTransaction[]
+  patternMastery     PatternMastery[]
+  earnedAchievements EarnedAchievement[]
+  profile            Profile?
+
+  @@map("users")
+}
+
+model Account {
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refreshToken      String? @map("refresh_token")
+  accessToken       String? @map("access_token")
+  expiresAt         Int?    @map("expires_at")
+  tokenType         String? @map("token_type")
+  scope             String?
+  idToken           String? @map("id_token")
+  sessionState      String? @map("session_state")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId], name: "accounts_user_id_idx")
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @id @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], name: "sessions_user_id_idx")
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime @db.Timestamptz(6)
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+// =========================================================================
+// Domain tables
+// =========================================================================
+
+model ChallengeAttempt {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @map("user_id")
+  challengeSlug    String    @map("challenge_slug")
+  firstAttemptedAt DateTime  @default(now()) @map("first_attempted_at") @db.Timestamptz(6)
+  lastAttemptedAt  DateTime  @default(now()) @map("last_attempted_at") @db.Timestamptz(6)
+  correctAt        DateTime? @map("correct_at") @db.Timestamptz(6)
+  attemptsCount    Int       @default(0) @map("attempts_count")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, challengeSlug], name: "challenge_attempts_user_challenge_idx")
+  @@index([userId], name: "challenge_attempts_user_idx")
+  @@map("challenge_attempts")
+}
+
+model XpTransaction {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @map("user_id")
+  amount         Int
+  source         String
+  sourceId       String   @map("source_id")
+  idempotencyKey String   @map("idempotency_key")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, idempotencyKey], name: "xp_transactions_idempotency_idx")
+  @@index([userId, createdAt], name: "xp_transactions_user_created_idx")
+  @@map("xp_transactions")
+}
+
+model PatternMastery {
+  userId        String    @map("user_id")
+  patternSlug   String    @map("pattern_slug")
+  attemptsCount Int       @default(0) @map("attempts_count")
+  correctCount  Int       @default(0) @map("correct_count")
+  masteredAt    DateTime? @map("mastered_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, patternSlug])
+  @@map("pattern_mastery")
+}
+
+model EarnedAchievement {
+  userId          String   @map("user_id")
+  achievementSlug String   @map("achievement_slug")
+  earnedAt        DateTime @default(now()) @map("earned_at") @db.Timestamptz(6)
+  badgeTheme      String   @default("default") @map("badge_theme")
+  badgeStyle      String?  @map("badge_style")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, achievementSlug])
+  @@map("earned_achievements")
+}
+
+model Profile {
+  userId      String     @id @map("user_id")
+  displayName String?    @map("display_name")
+  bio         String?
+  visibility  Visibility @default(public)
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}

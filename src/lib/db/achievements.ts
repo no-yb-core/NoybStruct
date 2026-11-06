@@ -65,7 +65,7 @@ export const RULES: Rule[] = [
         (m) => m.attemptsCount >= 3 && m.correctCount === m.attemptsCount,
       ),
   },
-    {
+  {
     slug: "pattern-collector",
     xpBonus: 25,
     check: (ctx) => ctx.patternMastery.length >= 5,

@@ -24,7 +24,7 @@ export const ACHIEVEMENT_LABELS: Record<
     title: "Pattern Master",
     description: "Mastered a pattern with 3+ perfect attempts.",
   },
-    "pattern-collector": {
+  "pattern-collector": {
     title: "Pattern Collector",
     description: "Tried 5 different patterns.",
   },
@@ -40,7 +40,7 @@ export const ACHIEVEMENT_LABELS: Record<
     title: "Mastery Collector",
     description: "Mastered three different patterns.",
   },
-  "persistent": {
+  persistent: {
     title: "Persistent",
     description: "Made twenty total attempts.",
   },

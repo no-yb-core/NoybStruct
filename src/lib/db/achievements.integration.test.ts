@@ -210,9 +210,10 @@ describe("extended achievement rules", () => {
       patternSlug: "arrays",
       isCorrect: true,
     });
-    expect(
-      r.newAchievements.find((a) => a.slug === "xp-1000"),
-    ).toEqual({ slug: "xp-1000", xpBonus: 50 });
+    expect(r.newAchievements.find((a) => a.slug === "xp-1000")).toEqual({
+      slug: "xp-1000",
+      xpBonus: 50,
+    });
   });
 
   it("unlocks ten-corrects at 10 total correct answers", async () => {
@@ -273,8 +274,9 @@ describe("extended achievement rules", () => {
       patternSlug: "arrays",
       isCorrect: false,
     });
-    expect(
-      r.newAchievements.find((a) => a.slug === "persistent"),
-    ).toEqual({ slug: "persistent", xpBonus: 25 });
+    expect(r.newAchievements.find((a) => a.slug === "persistent")).toEqual({
+      slug: "persistent",
+      xpBonus: 25,
+    });
   });
 });

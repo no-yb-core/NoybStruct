@@ -90,3 +90,14 @@ export async function getProfileData(
     achievements,
   };
 }
+
+export async function getProfileDataByUsername(
+  githubUsername: string,
+): Promise<ProfileData | null> {
+  const user = await prisma.user.findUnique({
+    where: { githubUsername },
+    select: { id: true },
+  });
+  if (!user) return null;
+  return getProfileData(user.id);
+}

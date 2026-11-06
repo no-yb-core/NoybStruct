@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { EB_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { siteUrl } from "@/lib/site";
 
 const bodyFont = Inter({
   variable: "--font-body",

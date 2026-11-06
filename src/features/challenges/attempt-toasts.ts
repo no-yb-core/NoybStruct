@@ -5,7 +5,8 @@ type IncomingAchievement = { slug: string; xpBonus: number };
 
 export function showAchievementToasts(achievements: IncomingAchievement[]) {
   for (const achievement of achievements) {
-    const meta = ACHIEVEMENT_LABELS[achievement.slug as keyof typeof ACHIEVEMENT_LABELS];
+    const meta =
+      ACHIEVEMENT_LABELS[achievement.slug as keyof typeof ACHIEVEMENT_LABELS];
     if (!meta) continue;
 
     toast.success(`Achievement unlocked: ${meta.title}`, {

@@ -68,10 +68,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${bodyFont.variable} ${serifFont.variable} ${codeFont.variable}`}
     >
       <body className="min-h-dvh flex flex-col">
-        
         {children}
-          <Toaster />
-        </body>
+        <Toaster />
+      </body>
     </html>
   );
 }

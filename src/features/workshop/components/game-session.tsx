@@ -96,13 +96,18 @@ function ChallengeView({
   async function handleSubmit() {
     if (!state.selectedPatternSlug) return;
     const isRetry = state.attempted.has(challenge.slug);
-    const evaluation = evaluateAnswer(challenge, state.selectedPatternSlug, isRetry);
+    const evaluation = evaluateAnswer(
+      challenge,
+      state.selectedPatternSlug,
+      isRetry,
+    );
 
     // 1. Local reducer runs immediately (unchanged)
     dispatch({ type: "SUBMIT" });
 
     // 2. Server persists in background — now we also surface achievements
     const result = await submit(evaluation.correct);
+
     if (result?.newAchievements?.length) {
       showAchievementToasts(result.newAchievements);
     }

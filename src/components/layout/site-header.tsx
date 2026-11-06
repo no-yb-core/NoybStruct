@@ -6,6 +6,7 @@ import { SignOutButton } from "../sign-out-button";
 const navItems = [
   { href: "/library", label: "Library" },
   { href: "/workshop", label: "Workshop" },
+  { href: "/leaderboard", label: "Leaderboard" },
 ] as const;
 
 export async function SiteHeader() {

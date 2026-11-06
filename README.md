@@ -5,7 +5,7 @@
 [![CI](https://github.com/no-yb-core/NoybStruct/actions/workflows/ci.yml/badge.svg)](https://github.com/no-yb-core/NoybStruct/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-**Live:** [noyb-struct.vercel.app](https://noyb-struct.vercel.app/)
+**Live:** [noyb-struct.vercel.app](https://struct.noybcore.com/)
 
 ## Features
 

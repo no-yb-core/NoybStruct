@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import type { PatternSlug } from "@/content/patterns/types";
 import type { AnswerEvaluation } from "../engine";
 
@@ -12,6 +13,7 @@ type AnswerOptionProps = {
   evaluation: AnswerEvaluation | undefined;
   disabled: boolean;
   onSelect: (slug: PatternSlug) => void;
+  index?: number;
 };
 
 type VisualState =
@@ -35,11 +37,14 @@ function visualState(
 }
 
 const stateClasses: Record<VisualState, string> = {
-  default: "border-border hover:border-forest/60",
-  selected: "border-forest bg-secondary",
-  correct: "border-forest bg-secondary",
-  wrong: "border-destructive bg-destructive/5",
-  "revealed-correct": "border-forest border-dashed",
+  default:
+    "border-border hover:border-forest/70 hover:bg-secondary/40 dark:hover:border-gold/70",
+  selected:
+    "border-forest bg-forest/10 ring-1 ring-forest dark:border-gold dark:bg-gold/10 dark:ring-gold",
+  correct: "border-forest bg-forest/15 ring-1 ring-forest dark:border-forest",
+  wrong: "border-destructive bg-destructive/10 ring-1 ring-destructive",
+  "revealed-correct":
+    "border-forest border-dashed bg-forest/5 dark:border-gold",
 };
 
 export function AnswerOption({
@@ -51,6 +56,7 @@ export function AnswerOption({
   evaluation,
   disabled,
   onSelect,
+  index,
 }: AnswerOptionProps) {
   const visual = visualState(
     slug,
@@ -59,26 +65,49 @@ export function AnswerOption({
     correctPatternSlug,
     evaluation,
   );
+
   const className = [
-    "flex w-full items-center justify-between border px-4 py-3 text-left transition-colors",
+    "group flex w-full items-center justify-between rounded-sm border px-4 py-3 text-left transition-all shadow-xs",
     stateClasses[visual],
     disabled ? "cursor-default" : "cursor-pointer",
   ].join(" ");
 
   return (
-    <button
+    <motion.button
       type="button"
       onClick={() => onSelect(slug)}
       disabled={disabled}
+      whileTap={disabled ? undefined : { scale: 0.99 }}
       className={className}
       aria-pressed={slug === selected}
     >
-      <span>{displayName}</span>
+      <div className="flex items-center gap-3">
+        {/* Keyboard shortcut pill */}
+        {index !== undefined && (
+          <span className="hidden sm:inline-flex size-5 items-center justify-center rounded-xs border border-border/80 bg-background/80 font-mono text-[10px] text-muted-foreground group-hover:border-foreground/40">
+            {index + 1}
+          </span>
+        )}
+        <span className="font-medium text-sm text-foreground">
+          {displayName}
+        </span>
+      </div>
+
       <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-        {visual === "correct" && "correct"}
-        {visual === "wrong" && "your answer"}
-        {visual === "revealed-correct" && "correct answer"}
+        {visual === "correct" && (
+          <span className="text-forest dark:text-emerald-400 font-bold">
+            correct
+          </span>
+        )}
+        {visual === "wrong" && (
+          <span className="text-destructive font-bold">your answer</span>
+        )}
+        {visual === "revealed-correct" && (
+          <span className="text-forest dark:text-gold font-bold">
+            correct answer
+          </span>
+        )}
       </span>
-    </button>
+    </motion.button>
   );
 }

@@ -26,8 +26,8 @@ const codeFont = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Design Craft",
-    template: "%s · Design Craft",
+    default: "Noyb Struct",
+    template: "%s · Noyb Struct",
   },
   description:
     "An interactive digital book for the 23 Gang of Four design patterns.",

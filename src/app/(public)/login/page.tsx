@@ -6,7 +6,7 @@ import { SignInButton } from "@/components/sign-in-button";
 export default function LoginPage() {
   return (
     <div className="mx-auto flex max-w-md flex-col gap-6 px-6 py-24">
-      <h1 className="text-2xl font-semibold">Sign in to Design Craft</h1>
+      <h1 className="text-2xl font-semibold">Sign in to Noyb Struct</h1>
       <p className="text-sm text-neutral-600">
         Progress, XP, and achievements are tied to your account.
       </p>

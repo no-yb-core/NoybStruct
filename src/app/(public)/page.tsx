@@ -13,7 +13,7 @@ export default function HomePage() {
           Volume I
         </p>
         <h1 className="font-heading text-5xl font-bold tracking-tight">
-          Design Craft
+          Noyb Struct
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
           An interactive book for learning the 23 Gang of Four design patterns —

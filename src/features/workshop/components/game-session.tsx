@@ -8,6 +8,7 @@ import { ChallengeCard } from "./challenge-card";
 import { CompletionScreen } from "./completion-screen";
 import { ProgressBar } from "./progress-bar";
 import { useSubmitAttempt } from "@/features/challenges/use-submit-attempt";
+import { showAchievementToasts } from "@/features/challenges/attempt-toasts";
 
 // Stable no-op subscribe — useSyncExternalStore needs a stable reference
 const emptySubscribe = () => () => {};
@@ -92,7 +93,7 @@ function ChallengeView({
     challenge.patternSlug,
   );
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!state.selectedPatternSlug) return;
     const isRetry = state.attempted.has(challenge.slug);
     const evaluation = evaluateAnswer(
@@ -100,8 +101,16 @@ function ChallengeView({
       state.selectedPatternSlug,
       isRetry,
     );
+
+    // 1. Local reducer runs immediately (unchanged)
     dispatch({ type: "SUBMIT" });
-    void submit(evaluation.correct);
+
+    // 2. Server persists in background — now we also surface achievements
+    const result = await submit(evaluation.correct);
+
+    if (result?.newAchievements?.length) {
+      showAchievementToasts(result.newAchievements);
+    }
   }
 
   return (

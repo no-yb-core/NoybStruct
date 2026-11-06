@@ -3,7 +3,6 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Suspense } from "react";
 
-
 export const instant = false;
 
 export default async function PublicLayout({
@@ -11,7 +10,7 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode;
 }) {
- await connection();
+  await connection();
   return (
     <>
       <Suspense fallback={<HeaderSkeleton />}>

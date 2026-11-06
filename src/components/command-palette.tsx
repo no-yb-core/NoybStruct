@@ -1,15 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Command } from "cmdk";
-import { searchPatterns, type SearchResult } from "@/lib/search";
+import { searchPatterns } from "@/lib/search";
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
   const router = useRouter();
+
+  const results = useMemo(() => searchPatterns(query), [query]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -22,10 +23,6 @@ export function CommandPalette() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
-
-  useEffect(() => {
-    setResults(searchPatterns(query));
-  }, [query]);
 
   const select = useCallback(
     (href: string) => {

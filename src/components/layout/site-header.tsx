@@ -13,7 +13,7 @@ export function SiteHeader() {
           href="/"
           className="font-heading text-xl font-semibold tracking-tight"
         >
-          Design Craft
+          Noyb Struct
         </Link>
         <nav aria-label="Primary">
           <ul className="flex items-center gap-6 text-sm">

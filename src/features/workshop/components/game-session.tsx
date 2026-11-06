@@ -61,7 +61,11 @@ function GameSessionInner({ challenges, patternNames }: GameSessionProps) {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
-      <ProgressBar current={state.index + 1} total={state.challenges.length} />
+      <ProgressBar
+        current={state.index + 1}
+        total={state.challenges.length}
+        sessionXp={state.totalXp}
+      />
       <ChallengeView
         key={challenge.slug}
         challenge={challenge}

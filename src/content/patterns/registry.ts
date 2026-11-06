@@ -24,7 +24,7 @@ import { strategy } from "./strategy";
 import { templateMethod } from "./template-method";
 import { visitor } from "./visitor";
 
-const patterns: readonly Pattern[] = [
+export const patterns: readonly Pattern[] = [
   abstractFactory,
   adapter,
   bridge,

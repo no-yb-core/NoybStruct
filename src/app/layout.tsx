@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { EB_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { CommandPalette } from "@/components/command-palette";
 
 const bodyFont = Inter({
   variable: "--font-body",
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-dvh flex flex-col">
         {children}
         <Toaster />
+        <CommandPalette />
       </body>
     </html>
   );

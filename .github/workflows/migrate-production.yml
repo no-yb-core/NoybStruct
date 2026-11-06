@@ -1,0 +1,39 @@
+name: Migrate Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "migrate-production" to confirm'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    if: github.event.inputs.confirm == 'migrate-production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - name: Show pending migrations
+        run: pnpm db:status
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Apply migrations
+        run: pnpm db:deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

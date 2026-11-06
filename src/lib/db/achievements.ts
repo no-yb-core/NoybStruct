@@ -5,7 +5,16 @@ import { awardXp } from "./xp";
 type TxClient = Prisma.TransactionClient;
 
 export type AchievementSlug =
-  "first-correct" | "five-corrects" | "xp-100" | "xp-500" | "pattern-master";
+  | "first-correct"
+  | "five-corrects"
+  | "xp-100"
+  | "xp-500"
+  | "pattern-master"
+  | "pattern-collector"
+  | "xp-1000"
+  | "ten-corrects"
+  | "mastery-collector"
+  | "persistent";
 
 type PatternSnapshot = {
   patternSlug: string;
@@ -55,6 +64,35 @@ export const RULES: Rule[] = [
       ctx.patternMastery.some(
         (m) => m.attemptsCount >= 3 && m.correctCount === m.attemptsCount,
       ),
+  },
+    {
+    slug: "pattern-collector",
+    xpBonus: 25,
+    check: (ctx) => ctx.patternMastery.length >= 5,
+  },
+  {
+    slug: "xp-1000",
+    xpBonus: 50,
+    check: (ctx) => ctx.totalXp >= 1000,
+  },
+  {
+    slug: "ten-corrects",
+    xpBonus: 25,
+    check: (ctx) => ctx.totalCorrect >= 10,
+  },
+  {
+    slug: "mastery-collector",
+    xpBonus: 100,
+    check: (ctx) =>
+      ctx.patternMastery.filter(
+        (m) => m.attemptsCount >= 3 && m.correctCount === m.attemptsCount,
+      ).length >= 3,
+  },
+  {
+    slug: "persistent",
+    xpBonus: 25,
+    check: (ctx) =>
+      ctx.patternMastery.reduce((sum, m) => sum + m.attemptsCount, 0) >= 20,
   },
 ];
 

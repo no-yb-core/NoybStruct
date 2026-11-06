@@ -24,6 +24,9 @@ const codeFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
   title: {
     default: "Noyb Struct",
     template: "%s | Noyb Struct",
@@ -43,15 +46,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Noyb Struct",
     description: "Learn design patterns by solving real challenges.",
-    images: [{ url: "/icons/logo-1024.png", width: 1024, height: 1024 }],
     type: "website",
     siteName: "Noyb Struct",
+    url: "/",
   },
   twitter: {
     card: "summary_large_image",
     title: "Noyb Struct",
     description: "Learn design patterns by solving real challenges.",
-    images: ["/icons/logo-1024.png"],
   },
 };
 

@@ -26,6 +26,7 @@ export async function SiteHeader() {
             height={28}
             priority
             className="rounded"
+            style={{ width: "auto", height: "auto" }}
           />
           <span>Noyb Struct</span>
         </Link>

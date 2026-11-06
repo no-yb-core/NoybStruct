@@ -84,3 +84,30 @@ describe("getProfileData", () => {
     ).toBeNull();
   });
 });
+
+import { getProfileDataByUsername } from "./profile";
+
+describe("getProfileDataByUsername", () => {
+  beforeEach(async () => {
+    await resetDatabase();
+    await prisma.user.create({
+      data: {
+        id: "00000000-0000-0000-0000-000000000001",
+        name: "Test User",
+        githubUsername: "testuser",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
+  });
+
+  it("looks up by githubUsername", async () => {
+    const data = await getProfileDataByUsername("testuser");
+    expect(data).not.toBeNull();
+    expect(data!.user.name).toBe("Test User");
+  });
+
+  it("returns null for unknown username", async () => {
+    expect(await getProfileDataByUsername("nobody")).toBeNull();
+  });
+});

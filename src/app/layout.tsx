@@ -3,6 +3,7 @@ import { EB_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { CommandPalette } from "@/components/command-palette";
+import { MotionProvider } from "@/components/providers/motion-provider";
 
 const bodyFont = Inter({
   variable: "--font-body",
@@ -66,12 +67,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${bodyFont.variable} ${serifFont.variable} ${codeFont.variable}`}
     >
-      <body className="min-h-dvh flex flex-col">
-        {children}
-        <Toaster />
-        <CommandPalette />
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('noyb-theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&d)){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}})()`,
+          }}
+        />
+      </head>
+      <body className="min-h-dvh flex flex-col antialiased selection:bg-gold/30 selection:text-foreground">
+        <MotionProvider>
+          {children}
+          <Toaster />
+          <CommandPalette />
+        </MotionProvider>
       </body>
     </html>
   );

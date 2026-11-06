@@ -80,7 +80,7 @@ export async function recordChallengeAttempt(input: RecordAttemptInput) {
       if (!xpAwarded) xpAmount = 0;
     }
 
-    const newAchievements = isCorrect ? await checkAndUnlock(userId, tx) : [];
+    const newAchievements = await checkAndUnlock(userId, tx);
 
     return { attempt, isFirstCorrect, xpAwarded, xpAmount, newAchievements };
   });

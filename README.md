@@ -1,4 +1,4 @@
-# Design Craft
+# Noyb Struct
 
 An interactive digital book that teaches the 23 Gang of Four design patterns through explanations, examples, and a programming game.
 

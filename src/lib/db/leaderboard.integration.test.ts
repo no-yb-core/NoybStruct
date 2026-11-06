@@ -39,8 +39,8 @@ describe("getLeaderboard", () => {
 
   it("ranks by total XP descending", async () => {
     await seed("u1", "Alice", [50, 100]); // 150
-    await seed("u2", "Bob", [200]);       // 200
-    await seed("u3", "Charlie", [50]);    // 50
+    await seed("u2", "Bob", [200]); // 200
+    await seed("u3", "Charlie", [50]); // 50
 
     const entries = await getLeaderboard();
     expect(entries.map((e) => e.name)).toEqual(["Bob", "Alice", "Charlie"]);

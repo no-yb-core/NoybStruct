@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { cacheLife } from "next/cache";
 import { getLeaderboard } from "@/lib/db/leaderboard";
 
 export const metadata = {
@@ -7,10 +7,16 @@ export const metadata = {
   description: "Top players by total XP.",
 };
 
-export const revalidate = 60; // ISR — refresh every minute
+// Extract the data fetch into a cached function.
+// "use cache" + cacheLife replace the old `export const revalidate = 60`.
+async function getCachedLeaderboard() {
+  "use cache";
+  cacheLife({ revalidate: 60 });
+  return getLeaderboard(10);
+}
 
 export default async function LeaderboardPage() {
-  const entries = await getLeaderboard(10);
+  const entries = await getCachedLeaderboard();
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
